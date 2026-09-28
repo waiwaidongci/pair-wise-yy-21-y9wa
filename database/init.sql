@@ -50,7 +50,31 @@ CREATE TABLE IF NOT EXISTS spare_part_usage (
   quantity TEXT,
   warehouse_name TEXT,
   approved_by TEXT,
-  usage_status TEXT
+  usage_status TEXT,
+  -- 实发数量：审批通过后按该数量核销仓库余量
+  issued_quantity TEXT
+);
+
+-- 备件仓库余量，按 仓库 + 备件编码 维护
+CREATE TABLE IF NOT EXISTS spare_part_stock (
+  part_code TEXT,
+  warehouse_name TEXT,
+  part_name TEXT,
+  remaining_quantity INTEGER,
+  PRIMARY KEY (part_code, warehouse_name)
+);
+
+-- 备件库存流水：审批出库扣减、退回补回
+CREATE TABLE IF NOT EXISTS spare_part_stock_log (
+  id INTEGER PRIMARY KEY AUTO_INCREMENT,
+  part_code TEXT,
+  warehouse_name TEXT,
+  usage_id INTEGER,
+  change_type TEXT,
+  change_quantity INTEGER,
+  remaining_quantity INTEGER,
+  actor TEXT,
+  created_at TEXT
 );
 
 CREATE TABLE IF NOT EXISTS audit_log (

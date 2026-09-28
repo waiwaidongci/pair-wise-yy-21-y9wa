@@ -14,6 +14,13 @@ cp .env.example .env && docker compose up -d
 
 后端健康检查：<http://localhost:21104/health>
 
+### 复电与备件核销联动
+
+- 备件领用逐项审批：`POST /api/spare-part-usage/:id/approve`（仓管角色），通过后按**实发数量** `issued_quantity` 扣减仓库余量；余量不足返回 `409 PART_STOCK_INSUFFICIENT`，该领用单挂为「数量不足」，同一领用单重复提交沿用第一次结果，不会二次扣减。
+- 退回：`POST /api/spare-part-usage/:id/return`，已通过的领用单按实发数量**补回余量**；重复退回幂等。
+- 班组长确认复电：`POST /api/repair-ticket/:id/restore`（班组长角色）。存在「待审批」或「数量不足」的备件时拒绝复电（`409 RESTORE_PENDING_PARTS`），并在 `detail.pending_approval_codes / insufficient_codes` 中列出未处理编码；全部处理完（通过或退回）后复电成功，重复确认幂等。
+- 请求头携带 `x-role`（`DISPATCHER/LEADER/WAREHOUSE_KEEPER/AUDITOR`）模拟 RBAC 身份；前端左下角可切换角色，备件审批仅仓管可见，复电按钮仅班组长可见。
+
 
 ## 本地开发方式
 
@@ -57,6 +64,8 @@ backend/src/routes, controllers, services, models, repositories, middlewares, co
 - FaultType: constants/FaultType、types/FaultType、constructors、logTemplates、errorMessages、筛选器、展示组件/控制器均有引用。
 - TicketStatus: constants/TicketStatus、types/TicketStatus、constructors、logTemplates、errorMessages、筛选器、展示组件/控制器均有引用。
 - AssetHealthStatus: constants/AssetHealthStatus、types/AssetHealthStatus、constructors、logTemplates、errorMessages、筛选器、展示组件/控制器均有引用。
+- SparePartUsageStatus（PENDING/APPROVED/RETURNED/STOCK_INSUFFICIENT）: 前后端 constants/SparePartUsageStatus、types/SparePartUsage、constructors、logTemplates（approve/return/deduct/refund）、errorCodes/errorMessages、RepairTicketService.restore 的拦截判断、ApprovalPanel 与备件页/工单页展示均有引用。
+- Role（DISPATCHER/LEADER/WAREHOUSE_KEEPER/AUDITOR）: 前后端 constants/Role、rbacMiddleware、各写接口路由、api/http 请求头、SessionStore、角色切换器与按钮显隐均有引用。
 
 ## 为什么会牵一发动全身
 

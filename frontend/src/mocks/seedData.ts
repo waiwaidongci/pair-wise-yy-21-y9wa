@@ -1,3 +1,6 @@
+import type { SparePartUsage } from "../types/SparePartUsage";
+import type { SparePartStock } from "../types/SparePartStock";
+
 export const mockData = {
   "gridAsset": [
     {
@@ -7,7 +10,7 @@ export const mockData = {
       "feeder_line": "feeder line 1",
       "voltage_level": "LOW",
       "location_desc": "location desc 1",
-      "health_status": "ASSIGNED",
+      "health_status": "NORMAL",
       "owner_team_id": 1
     },
     {
@@ -17,7 +20,7 @@ export const mockData = {
       "feeder_line": "feeder line 2",
       "voltage_level": "MEDIUM",
       "location_desc": "location desc 2",
-      "health_status": "ARRIVED",
+      "health_status": "WATCH",
       "owner_team_id": 2
     },
     {
@@ -27,7 +30,7 @@ export const mockData = {
       "feeder_line": "feeder line 3",
       "voltage_level": "HIGH",
       "location_desc": "location desc 3",
-      "health_status": "WAIT_DISPATCH",
+      "health_status": "DEGRADED",
       "owner_team_id": 3
     }
   ],
@@ -72,30 +75,30 @@ export const mockData = {
       "fault_report_id": 1,
       "team_id": 1,
       "dispatcher_id": 1,
-      "priority": "priority 1",
-      "status": "ASSIGNED",
-      "assigned_at": "2026-06-11T09:00:00Z",
-      "restored_at": "2026-06-11T09:00:00Z"
+      "priority": "HIGH",
+      "status": "REPAIRING",
+      "assigned_at": "2026-09-28T09:00:00Z",
+      "restored_at": ""
     },
     {
       "id": 2,
       "fault_report_id": 2,
       "team_id": 2,
       "dispatcher_id": 2,
-      "priority": "priority 2",
-      "status": "ARRIVED",
-      "assigned_at": "2026-06-12T09:00:00Z",
-      "restored_at": "2026-06-12T09:00:00Z"
+      "priority": "MEDIUM",
+      "status": "REPAIRING",
+      "assigned_at": "2026-09-28T10:00:00Z",
+      "restored_at": ""
     },
     {
       "id": 3,
       "fault_report_id": 3,
       "team_id": 3,
       "dispatcher_id": 3,
-      "priority": "priority 3",
-      "status": "WAIT_DISPATCH",
-      "assigned_at": "2026-06-13T09:00:00Z",
-      "restored_at": "2026-06-13T09:00:00Z"
+      "priority": "LOW",
+      "status": "REPAIRING",
+      "assigned_at": "2026-09-28T11:00:00Z",
+      "restored_at": ""
     }
   ],
   "crew": [
@@ -128,35 +131,17 @@ export const mockData = {
     }
   ],
   "sparePartUsage": [
-    {
-      "id": 1,
-      "ticket_id": 1,
-      "part_code": "part code 1",
-      "part_name": "part name 1",
-      "quantity": 92,
-      "warehouse_name": "warehouse name 1",
-      "approved_by": "approved by 1",
-      "usage_status": "ASSIGNED"
-    },
-    {
-      "id": 2,
-      "ticket_id": 2,
-      "part_code": "part code 2",
-      "part_name": "part name 2",
-      "quantity": 104,
-      "warehouse_name": "warehouse name 2",
-      "approved_by": "approved by 2",
-      "usage_status": "ARRIVED"
-    },
-    {
-      "id": 3,
-      "ticket_id": 3,
-      "part_code": "part code 3",
-      "part_name": "part name 3",
-      "quantity": 116,
-      "warehouse_name": "warehouse name 3",
-      "approved_by": "approved by 3",
-      "usage_status": "WAIT_DISPATCH"
-    }
-  ]
-} as const;
+    { id: 1, ticket_id: 1, part_code: "SP-001", part_name: "低压熔断器", quantity: 3, warehouse_name: "中心仓库", approved_by: "仓管-王敏", usage_status: "APPROVED", issued_quantity: 3 },
+    { id: 2, ticket_id: 1, part_code: "SP-002", part_name: "绝缘胶带", quantity: 2, warehouse_name: "中心仓库", approved_by: "仓管-王敏", usage_status: "APPROVED", issued_quantity: 2 },
+    { id: 3, ticket_id: 2, part_code: "SP-001", part_name: "低压熔断器", quantity: 1, warehouse_name: "中心仓库", approved_by: "仓管-王敏", usage_status: "APPROVED", issued_quantity: 1 },
+    { id: 4, ticket_id: 2, part_code: "SP-003", part_name: "10kV 电缆中间接头", quantity: 1, warehouse_name: "中心仓库", approved_by: null, usage_status: "PENDING", issued_quantity: null },
+    { id: 5, ticket_id: 3, part_code: "SP-002", part_name: "绝缘胶带", quantity: 5, warehouse_name: "中心仓库", approved_by: null, usage_status: "PENDING", issued_quantity: null },
+    { id: 6, ticket_id: 3, part_code: "SP-004", part_name: "柱上断路器控制器", quantity: 1, warehouse_name: "中心仓库", approved_by: "仓管-王敏", usage_status: "STOCK_INSUFFICIENT", issued_quantity: 1 }
+  ] as SparePartUsage[],
+  "sparePartStock": [
+    { part_code: "SP-001", part_name: "低压熔断器", warehouse_name: "中心仓库", remaining_quantity: 16 },
+    { part_code: "SP-002", part_name: "绝缘胶带", warehouse_name: "中心仓库", remaining_quantity: 8 },
+    { part_code: "SP-003", part_name: "10kV 电缆中间接头", warehouse_name: "中心仓库", remaining_quantity: 4 },
+    { part_code: "SP-004", part_name: "柱上断路器控制器", warehouse_name: "中心仓库", remaining_quantity: 0 }
+  ] as SparePartStock[]
+};

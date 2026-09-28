@@ -1,1 +1,3 @@
-export type RepairTicketPayload = Record<string, unknown>;
+export interface RestoreTicketPayload {
+  restored_by?: unknown;
+}
