@@ -1,4 +1,85 @@
-export const seed = {
+import type { SparePartUsage } from "./models/SparePartUsage";
+import type { SparePartStock } from "./models/SparePartStock";
+import type { SparePartStockLog } from "./models/SparePartStockLog";
+
+interface SeedState {
+  gridAsset: any[];
+  faultReport: any[];
+  repairTicket: any[];
+  crew: any[];
+  sparePartUsage: SparePartUsage[];
+  sparePartStock: SparePartStock[];
+  sparePartStockLog: SparePartStockLog[];
+}
+
+const now = "2026-09-28T08:00:00Z";
+
+const initialSparePartUsage: SparePartUsage[] = [
+  {
+    id: 1,
+    ticket_id: 1,
+    part_code: "DLQ-10kV-001",
+    part_name: "10kV柱上断路器",
+    quantity: 2,
+    actual_quantity: 2,
+    warehouse_name: "中心仓库",
+    approved_by: "",
+    usage_status: "PENDING",
+    created_at: "2026-09-28T06:10:00Z",
+    approved_at: "",
+    returned_at: ""
+  },
+  {
+    id: 2,
+    ticket_id: 1,
+    part_code: "BLQ-010-002",
+    part_name: "10kV跌落式熔断器",
+    quantity: 3,
+    actual_quantity: 3,
+    warehouse_name: "中心仓库",
+    approved_by: "",
+    usage_status: "PENDING",
+    created_at: "2026-09-28T06:12:00Z",
+    approved_at: "",
+    returned_at: ""
+  },
+  {
+    id: 3,
+    ticket_id: 2,
+    part_code: "DLQ-10kV-001",
+    part_name: "10kV柱上断路器",
+    quantity: 1,
+    actual_quantity: 1,
+    warehouse_name: "中心仓库",
+    approved_by: "",
+    usage_status: "PENDING",
+    created_at: "2026-09-28T07:05:00Z",
+    approved_at: "",
+    returned_at: ""
+  },
+  {
+    id: 4,
+    ticket_id: 3,
+    part_code: "JDX-JK-009",
+    part_name: "架空绝缘导线(米)",
+    quantity: 50,
+    actual_quantity: 50,
+    warehouse_name: "城东前置仓",
+    approved_by: "",
+    usage_status: "PENDING",
+    created_at: "2026-09-28T07:20:00Z",
+    approved_at: "",
+    returned_at: ""
+  }
+];
+
+const initialSparePartStock: SparePartStock[] = [
+  { id: 1, part_code: "DLQ-10kV-001", part_name: "10kV柱上断路器", warehouse_name: "中心仓库", remaining_quantity: 2, updated_at: now },
+  { id: 2, part_code: "BLQ-010-002", part_name: "10kV跌落式熔断器", warehouse_name: "中心仓库", remaining_quantity: 8, updated_at: now },
+  { id: 3, part_code: "JDX-JK-009", part_name: "架空绝缘导线(米)", warehouse_name: "城东前置仓", remaining_quantity: 120, updated_at: now }
+];
+
+export const seed: SeedState = {
   "gridAsset": [
     {
       "id": 1,
@@ -73,9 +154,9 @@ export const seed = {
       "team_id": 1,
       "dispatcher_id": 1,
       "priority": "priority 1",
-      "status": "ASSIGNED",
-      "assigned_at": "2026-06-11T09:00:00Z",
-      "restored_at": "2026-06-11T09:00:00Z"
+      "status": "REPAIRING",
+      "assigned_at": "2026-09-28T05:30:00Z",
+      "restored_at": ""
     },
     {
       "id": 2,
@@ -83,9 +164,9 @@ export const seed = {
       "team_id": 2,
       "dispatcher_id": 2,
       "priority": "priority 2",
-      "status": "ARRIVED",
-      "assigned_at": "2026-06-12T09:00:00Z",
-      "restored_at": "2026-06-12T09:00:00Z"
+      "status": "REPAIRING",
+      "assigned_at": "2026-09-28T06:20:00Z",
+      "restored_at": ""
     },
     {
       "id": 3,
@@ -93,9 +174,9 @@ export const seed = {
       "team_id": 3,
       "dispatcher_id": 3,
       "priority": "priority 3",
-      "status": "WAIT_DISPATCH",
-      "assigned_at": "2026-06-13T09:00:00Z",
-      "restored_at": "2026-06-13T09:00:00Z"
+      "status": "REPAIRING",
+      "assigned_at": "2026-09-28T07:00:00Z",
+      "restored_at": ""
     }
   ],
   "crew": [
@@ -127,36 +208,7 @@ export const seed = {
       "contact_phone": "13800000003"
     }
   ],
-  "sparePartUsage": [
-    {
-      "id": 1,
-      "ticket_id": 1,
-      "part_code": "part code 1",
-      "part_name": "part name 1",
-      "quantity": 92,
-      "warehouse_name": "warehouse name 1",
-      "approved_by": "approved by 1",
-      "usage_status": "ASSIGNED"
-    },
-    {
-      "id": 2,
-      "ticket_id": 2,
-      "part_code": "part code 2",
-      "part_name": "part name 2",
-      "quantity": 104,
-      "warehouse_name": "warehouse name 2",
-      "approved_by": "approved by 2",
-      "usage_status": "ARRIVED"
-    },
-    {
-      "id": 3,
-      "ticket_id": 3,
-      "part_code": "part code 3",
-      "part_name": "part name 3",
-      "quantity": 116,
-      "warehouse_name": "warehouse name 3",
-      "approved_by": "approved by 3",
-      "usage_status": "WAIT_DISPATCH"
-    }
-  ]
-} as const;
+  "sparePartUsage": initialSparePartUsage,
+  "sparePartStock": initialSparePartStock,
+  "sparePartStockLog": []
+};

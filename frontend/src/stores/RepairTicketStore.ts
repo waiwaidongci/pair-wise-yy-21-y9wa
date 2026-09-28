@@ -1,6 +1,21 @@
 import { defineStore } from "pinia";
-import { listRepairTicket } from "../api/RepairTicket";
+import { listRepairTicket, restoreRepairTicket } from "../api/RepairTicket";
+import type { RepairTicket } from "../types/RepairTicket";
+
 export const useRepairTicketStore = defineStore("repairTicket", {
-  state: () => ({ rows: [] as Awaited<ReturnType<typeof listRepairTicket>>, loading: false }),
-  actions: { async load() { this.loading = true; this.rows = await listRepairTicket(); this.loading = false; } }
+  state: () => ({ rows: [] as RepairTicket[], loading: false }),
+  actions: {
+    async load() {
+      this.loading = true;
+      try {
+        this.rows = await listRepairTicket();
+      } finally {
+        this.loading = false;
+      }
+    },
+    async restore(id: number) {
+      await restoreRepairTicket(id);
+      await this.load();
+    }
+  }
 });

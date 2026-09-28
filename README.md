@@ -57,6 +57,9 @@ backend/src/routes, controllers, services, models, repositories, middlewares, co
 - FaultType: constants/FaultType、types/FaultType、constructors、logTemplates、errorMessages、筛选器、展示组件/控制器均有引用。
 - TicketStatus: constants/TicketStatus、types/TicketStatus、constructors、logTemplates、errorMessages、筛选器、展示组件/控制器均有引用。
 - AssetHealthStatus: constants/AssetHealthStatus、types/AssetHealthStatus、constructors、logTemplates、errorMessages、筛选器、展示组件/控制器均有引用。
+- UsageStatus（备件领用状态 PENDING/APPROVED/RETURNED/REJECTED）:
+  - 后端：`constants/UsageStatus.ts`（含中文文案/格式化）、`models/SparePartUsage.ts`、`services/SparePartUsageService.ts`（逐项审批/退回核销）、`services/RepairTicketService.ts`（复电前校验）、`constructors/SparePartUsageDtoFactory.ts`、`repositories/SparePartUsageRepository.ts`、`controllers/SparePartUsageController.ts`。
+  - 前端：`constants/UsageStatus.ts`（文案与徽标色）、`types/UsageStatus.ts`、`types/SparePartUsage.ts`、`components/common/ApprovalPanel.vue`、`pages/TicketsPage.vue`、`pages/PartsPage.vue`、`mocks/seedData.ts`。
 
 ## 为什么会牵一发动全身
 

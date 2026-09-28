@@ -48,9 +48,34 @@ CREATE TABLE IF NOT EXISTS spare_part_usage (
   part_code TEXT,
   part_name TEXT,
   quantity TEXT,
+  actual_quantity TEXT,
   warehouse_name TEXT,
   approved_by TEXT,
-  usage_status TEXT
+  usage_status TEXT,
+  created_at TEXT,
+  approved_at TEXT,
+  returned_at TEXT
+);
+
+CREATE TABLE IF NOT EXISTS spare_part_stock (
+  id INTEGER PRIMARY KEY,
+  part_code TEXT,
+  part_name TEXT,
+  warehouse_name TEXT,
+  remaining_quantity INTEGER,
+  updated_at TEXT
+);
+
+CREATE TABLE IF NOT EXISTS spare_part_stock_log (
+  id INTEGER PRIMARY KEY,
+  part_code TEXT,
+  warehouse_name TEXT,
+  change_quantity INTEGER,
+  remaining_quantity INTEGER,
+  usage_id INTEGER,
+  ticket_id INTEGER,
+  action TEXT,
+  created_at TEXT
 );
 
 CREATE TABLE IF NOT EXISTS audit_log (
